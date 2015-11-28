@@ -3,16 +3,26 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.6/semantic.min.css"></link>
-		<title>Test</title>
+		<title>TheConnMan - Microservices</title>
 	</head>
 	<body>
 		<div class="ui segment">
 			<h1 class="ui header">Microservices Frontend</h1>
 		</div>
 		<div class="ui segment" ng-app="frontend" ng-controller="FrontEnd" style="max-width: 1200px; margin: 0 auto;">
-			<h1 class="ui dividing header">{{ header }}</h1>
+			<h1 class="ui dividing header">Frontend Message Processing</h1>
+			<div class="ui action labeled input">
+				<div class="ui label">
+					Message Count
+				</div>
+				<input type="number" ng-model="count" frontend-enter="sendMessages()" />
+				<button class="ui primary button" ng-click="sendMessages()">Submit</button>
+			</div>
 		</div>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.6/semantic.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-resource.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.6/semantic.min.js"></script>
+		<script src="/scripts/app.js"></script>
 	</body>
 </html>
