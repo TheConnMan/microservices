@@ -3,5 +3,8 @@
   "version": "0.1.0",
   "description": "Frontend for the microservice messaging",
   "author": "TheConnMan",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.13.3"
+  }
 }
