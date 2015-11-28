@@ -2,11 +2,19 @@
 
 var app = angular.module('frontend', ['ngResource']);
 
-app.controller('FrontEnd', ['$scope', '$resource', function($scope, $resource) {
+app.controller('FrontEnd', ['$scope', '$http', '$resource', function($scope, $http, $resource) {
 	$scope.count = 20;
+	$scope.loading = false;
 
 	$scope.sendMessages = function() {
-		console.log('Submitting ' + $scope.count + ' messages');
+		$scope.loading = true;
+		$http.get('/submit?count=' + $scope.count)
+		.then(function() {
+			$scope.loading = false;
+		})
+		.catch(function() {
+			$scope.error = true;
+		});
 	};
 }]).directive('frontendEnter', function() {
 	return function($scope, $element, $attrs) {
