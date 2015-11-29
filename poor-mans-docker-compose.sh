@@ -1,14 +1,17 @@
 #!/bin/bash
 
+WORKERS=3
+
 usage() {
-	echo "Usage: poor-mans-docker-compose.sh [-bdra]"
+	echo "Usage: poor-mans-docker-compose.sh [-w worker count] [-bdra]"
 	echo "       poor-mans-docker-compose.sh -h for help"
 	exit
 }
 
 showhelp() {
-	echo "Usage: poor-mans-docker-compose.sh [-bdra]"
+	echo "Usage: poor-mans-docker-compose.sh [-w worker count] [-bdra]"
 	echo "Docker compsition which works on Windows (in Cygwin)"
+	echo "  -w: Worker container count (default: $WORKERS)"
 	echo "  -b: Build containers only"
 	echo "  -d: Delete containers only"
 	echo "  -r: Delete and run containers"
@@ -23,16 +26,24 @@ build() {
 }
 
 remove() {
-	docker kill frontend worker rest-server rabbitmq
-	docker rm frontend worker rest-server rabbitmq
+	docker kill frontend rest-server rabbitmq
+	docker rm frontend rest-server rabbitmq
+	W=""
+	for (( i=1; i<=$WORKERS; i++ )); do
+		W+=" worker-$i"
+	done
+	docker kill $W
+	docker rm $W
 }
 
 run() {
 	remove
 	docker run -d -p 5672:5672 --name=rabbitmq rabbitmq
 	docker run -d -p 8080:8080 --name=rest-server microservices/rest-server
-	docker run -d --link rabbitmq --link rest-server --name=worker microservices/worker
 	docker run -d -p 80:3000 --link rabbitmq --link rest-server --name=frontend microservices/frontend
+	for (( i=1; i<=$WORKERS; i++ )); do
+		docker run -d --link rabbitmq --link rest-server --name=worker-$i microservices/worker
+	done
 }
 
 all() {
@@ -40,8 +51,9 @@ all() {
 	run
 }
 
-while getopts "bdrah" name; do
+while getopts "w:bdrah" name; do
 	case $name in
+		w)  WORKERS=$OPTARG;;
 		b)  build $0;;
 		d)  remove $0;;
 		r)  run $0;;
