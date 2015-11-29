@@ -10,9 +10,6 @@ app.controller('FrontEnd', ['$scope', '$http', '$resource', function($scope, $ht
 		field: 'message',
 		name: 'Text'
 	}, {
-		field: 'clientId',
-		name: 'Client UUID'
-	}, {
 		field: 'host',
 		name: 'Worker ID'
 	}, {
@@ -52,6 +49,12 @@ app.controller('FrontEnd', ['$scope', '$http', '$resource', function($scope, $ht
 		.catch(function() {
 			$scope.error = true;
 		});
+	};
+
+	$scope.uniqueWorkers = function() {
+		return $.unique($scope.messages.map(function(m) {
+			return m.host;
+		})).length;
 	};
 
 	$scope.changeSort = function(field) {

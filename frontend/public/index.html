@@ -14,7 +14,7 @@
 		<div class="ui segment">
 			<h1 class="ui header">Microservices Frontend</h1>
 		</div>
-		<div class="ui segment" ng-app="frontend" ng-controller="FrontEnd" style="max-width: 1200px; margin: 0 auto;">
+		<div class="ui segment" ng-app="frontend" ng-controller="FrontEnd" style="max-width: 800px; margin: 0 auto;">
 			<h1 class="ui dividing header">Frontend Message Processing</h1>
 			<div class="ui negative message" ng-if="error">
 				<div class="header">
@@ -33,6 +33,25 @@
 					<button class="ui primary button" ng-click="sendMessages()" ng-disabled="loading">Submit</button>
 				</div>
 			</div>
+			<div class="ui divider"></div>
+			<div class="ui two statistics">
+				<div class="statistic">
+					<div class="value">
+						{{ messages.length }}
+					</div>
+					<div class="label">
+						Total Messages
+					</div>
+				</div>
+				<div class="statistic">
+					<div class="value">
+						{{ uniqueWorkers() }}
+					</div>
+					<div class="label">
+						Unique Workers
+					</div>
+				</div>
+			</div>
 			<table class="ui celled striped table">
 				<thead>
 					<tr>
@@ -46,7 +65,6 @@
 					<tr ng-repeat="message in messages | filter: query | orderBy: sortField : reverse">
 						<td>{{ message.id }}</td>
 						<td>{{ message.message }}</td>
-						<td>{{ message.clientId }}</td>
 						<td>{{ message.host }}</td>
 						<td>{{ formatDate(message.dateCreated) }}</td>
 					</tr>
