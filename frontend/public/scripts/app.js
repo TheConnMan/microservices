@@ -3,6 +3,25 @@
 var app = angular.module('frontend', ['ngResource']);
 
 app.controller('FrontEnd', ['$scope', '$http', '$resource', function($scope, $http, $resource) {
+	$scope.fields = [{
+		field: 'id',
+		name: 'ID'
+	}, {
+		field: 'message',
+		name: 'Text'
+	}, {
+		field: 'clientId',
+		name: 'Client UUID'
+	}, {
+		field: 'host',
+		name: 'Worker ID'
+	}, {
+		field: 'dateCreated',
+		name: 'Date Created'
+	}];
+	$scope.sortField = 'dateCreated';
+	$scope.reverse = false;
+
 	$scope.count = 20;
 	$scope.loading = false;
 	$scope.uuid = localStorage.getItem('uuid') ? localStorage.getItem('uuid') : guid();
@@ -33,6 +52,19 @@ app.controller('FrontEnd', ['$scope', '$http', '$resource', function($scope, $ht
 		.catch(function() {
 			$scope.error = true;
 		});
+	};
+
+	$scope.changeSort = function(field) {
+		if ($scope.sortField == field) {
+			$scope.reverse = !$scope.reverse;
+		} else {
+			$scope.sortField = field;
+			$scope.reverse = false;
+		}
+	};
+
+	$scope.formatDate = function(dateString) {
+		return new Date(dateString).toString('MM/dd/yyyy HH:mm:ss');
 	};
 }]).directive('frontendEnter', function() {
 	return function($scope, $element, $attrs) {

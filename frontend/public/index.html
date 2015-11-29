@@ -4,6 +4,11 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.6/semantic.min.css"></link>
 		<title>TheConnMan - Microservices</title>
+		<style>
+			.ui.table tr th {
+				cursor: pointer;
+			}
+		</style>
 	</head>
 	<body>
 		<div class="ui segment">
@@ -31,20 +36,19 @@
 			<table class="ui celled striped table">
 				<thead>
 					<tr>
-						<th>ID</th>
-						<th>Message</th>
-						<th>Client UUID</th>
-						<th>Worker ID</th>
-						<th>Date Created</th>
+						<th ng-repeat="field in fields" ng-click="changeSort(field.field)">
+							{{field.name}}
+							<i ng-if="sortField == field.field" class="ui sort {{ reverse ? 'ascending' : 'descending' }} icon"></i>
+						</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="message in messages">
+					<tr ng-repeat="message in messages | filter: query | orderBy: sortField : reverse">
 						<td>{{ message.id }}</td>
 						<td>{{ message.message }}</td>
 						<td>{{ message.clientId }}</td>
 						<td>{{ message.host }}</td>
-						<td>{{ message.dateCreated }}</td>
+						<td>{{ formatDate(message.dateCreated) }}</td>
 					</tr>
 				</tbody>
 			</table>
@@ -53,6 +57,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-resource.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.6/semantic.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
 		<script src="/scripts/app.js"></script>
 	</body>
 </html>
