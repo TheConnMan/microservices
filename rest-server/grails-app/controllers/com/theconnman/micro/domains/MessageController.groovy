@@ -10,8 +10,10 @@ class MessageController extends RestfulController {
 	}
 
 	def index() {
-		if (params.uuid) {
+		if (params.uuid && !params.maxId) {
 			render(Message.findAllByClientId(params.uuid) as JSON)
+		} else if (params.uuid && params.maxId) {
+			render(Message.findAllByClientIdAndIdGreaterThan(params.uuid, params.maxId) as JSON)
 		} else {
 			render(Message.list() as JSON)
 		}

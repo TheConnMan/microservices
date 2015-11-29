@@ -8,6 +8,22 @@ app.controller('FrontEnd', ['$scope', '$http', '$resource', function($scope, $ht
 	$scope.uuid = localStorage.getItem('uuid') ? localStorage.getItem('uuid') : guid();
 	localStorage.setItem('uuid', $scope.uuid);
 
+	var Message = $resource('http://rest-server:8080/message/:id', {id: '@id'}, {
+		update: {
+			method: 'PUT',
+			params: {id: '@id'}
+		}
+	});
+
+	$scope.messages = Message.query({uuid: $scope.uuid});
+
+	setInterval(function() {
+		var maxId = Math.max.apply(Math, $scope.messages.map(function(m) { return m.id; }).concat([0]));
+		Message.query({uuid: $scope.uuid, maxId: maxId}, function(data) {
+			$scope.messages = $scope.messages.concat(data.map(identity));
+		});
+	}, 1000);
+
 	$scope.sendMessages = function() {
 		$scope.loading = true;
 		$http.get('/submit?count=' + $scope.count + '&uuid=' + $scope.uuid)
@@ -36,4 +52,8 @@ function guid() {
 		return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
 	}
 	return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+}
+
+function identity(d) {
+	return d;
 }
