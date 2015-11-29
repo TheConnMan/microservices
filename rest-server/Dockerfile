@@ -16,7 +16,7 @@ RUN mkdir /app
 COPY . /app
 WORKDIR /app
 
-RUN grails compile --stacktrace --verbose
+RUN grails compile
 
 EXPOSE 8080
 
