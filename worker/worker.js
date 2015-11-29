@@ -1,3 +1,5 @@
+var request = require('request');
+var os = require("os");
 var amqp = require('amqplib/callback_api');
 
 connect();
@@ -13,8 +15,14 @@ function connect() {
 			var q = 'test';
 			ch.assertQueue(q, {durable: false});
 			console.log("Waiting for messages in %s...", q);
+			var hostname = os.hostname();
 			ch.consume(q, function(msg) {
-				console.log(" [x] Received %s", msg.content.toString());
+				request.post('http://rest-server:8080/message', {
+					json: {
+						host: hostname,
+						message: msg.content.toString()
+					}
+				});
 			}, {
 				noAck: true
 			});

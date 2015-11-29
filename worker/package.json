@@ -5,6 +5,7 @@
   "author": "TheConnMan",
   "license": "MIT",
   "dependencies": {
-    "amqplib": "^0.4.0"
+    "amqplib": "^0.4.0",
+    "request": "^2.67.0"
   }
 }
