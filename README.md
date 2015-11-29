@@ -14,4 +14,6 @@ This repo represents a collection of microservices for a very basic distributed 
 ## Usage
 - Set up Docker for your machine
 - Run `poor-mans-docker-compose.sh -a`
+- Wait until all containers are up and the **rest-server** logs read:
+	> Grails application running at http://localhost:8080 in environment: production
 - Go to the Docker VM IP address
