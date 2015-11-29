@@ -10,7 +10,11 @@ class MessageController extends RestfulController {
 	}
 
 	def index() {
-		render(Message.list() as JSON)
+		if (params.uuid) {
+			render(Message.findAllByClientId(params.uuid) as JSON)
+		} else {
+			render(Message.list() as JSON)
+		}
 	}
 
 	def save() {
