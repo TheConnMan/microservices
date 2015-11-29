@@ -23,11 +23,13 @@ build() {
 	docker build -t microservices/frontend ./frontend/
 	docker build -t microservices/worker ./worker/
 	docker build -t microservices/rest-server ./rest-server/
+	docker pull rabbitmq
+	docker pull mysql
 }
 
 remove() {
-	docker kill frontend rest-server rabbitmq
-	docker rm frontend rest-server rabbitmq
+	docker kill frontend mysql rest-server rabbitmq
+	docker rm frontend mysql rest-server rabbitmq
 	W=""
 	for (( i=1; i<=$WORKERS; i++ )); do
 		W+=" worker-$i"
@@ -39,7 +41,8 @@ remove() {
 run() {
 	remove
 	docker run -d -p 5672:5672 --name=rabbitmq rabbitmq
-	docker run -d -p 8080:8080 --name=rest-server microservices/rest-server
+	docker run -d --name mysql -e MYSQL_ROOT_PASSWORD=micro -e MYSQL_DATABASE=micro mysql
+	docker run -d -p 8080:8080 --link mysql --name=rest-server microservices/rest-server
 	docker run -d -p 80:3000 --link rabbitmq --link rest-server --name=frontend microservices/frontend
 	for (( i=1; i<=$WORKERS; i++ )); do
 		docker run -d --link rabbitmq --link rest-server --name=worker-$i microservices/worker
