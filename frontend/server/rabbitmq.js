@@ -1,7 +1,10 @@
+var Q = require('q');
+var amqp = require('amqplib/callback_api');
+
 module.exports = {
 	getAmpqConnection: function() {
 		var d = Q.defer();
-		amqp.connect('amqp://localhost', function(err, conn) {
+		amqp.connect('amqp://rabbitmq', function(err, conn) {
 			d.resolve(conn);
 		});
 		return d.promise;
