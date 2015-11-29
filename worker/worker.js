@@ -17,10 +17,12 @@ function connect() {
 			console.log("Waiting for messages in %s...", q);
 			var hostname = os.hostname();
 			ch.consume(q, function(msg) {
+				var object = JSON.parse(msg.content.toString());
 				request.post('http://rest-server:8080/message', {
 					json: {
 						host: hostname,
-						message: msg.content.toString()
+						message: object.message,
+						clientId: object.uuid
 					}
 				});
 			}, {

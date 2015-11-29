@@ -11,8 +11,12 @@ app.get('/submit', function(req, res) {
 	Q.fcall(rabbitmq.getAmpqConnection)
 	.then(rabbitmq.getChannel)
 	.then(function(connObj) {
+		var message = {
+			message: 'Hello world',
+			uuid: req.query.uuid
+		};
 		for (var i = 0; i < req.query.count; i++) {
-			rabbitmq.submitMessage(connObj.channel, 'test', 'Hello world');
+			rabbitmq.submitMessage(connObj.channel, 'test', JSON.stringify(message));
 		}
 		res.send(JSON.stringify({ok: true}));
 	});
