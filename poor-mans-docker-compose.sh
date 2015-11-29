@@ -20,6 +20,8 @@ showhelp() {
 }
 
 build() {
+	npm --prefix ./frontend/ i ./frontend/
+	npm --prefix ./worker/ i ./worker/
 	docker build -t microservices/frontend ./frontend/
 	docker build -t microservices/worker ./worker/
 	docker build -t microservices/rest-server ./rest-server/
