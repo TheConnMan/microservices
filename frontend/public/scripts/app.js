@@ -24,7 +24,7 @@ app.controller('FrontEnd', ['$scope', '$http', '$resource', function($scope, $ht
 	$scope.uuid = localStorage.getItem('uuid') ? localStorage.getItem('uuid') : guid();
 	localStorage.setItem('uuid', $scope.uuid);
 
-	var Message = $resource('http://rest-server:8080/message/:id', {id: '@id'}, {
+	var Message = $resource('http://' + window.location.hostname + ':8080/message/:id', {id: '@id'}, {
 		update: {
 			method: 'PUT',
 			params: {id: '@id'}
