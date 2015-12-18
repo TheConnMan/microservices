@@ -22,11 +22,12 @@ Screenshot of Kitematic showing a few of the Docker containers running
 
 ## Usage
 - Set up Docker for your machine
-- Run `poor-mans-docker-compose.sh -a`
+- Run `docker-compose up -d`
 - Wait until all containers are up and the **rest-server** logs read:
   > Grails application running at [http://localhost:8080](http://localhost:8080) in environment: production
 
 - Go to the Docker VM IP address
+- [Optional] Scale up or down the worker count with `docker-compose scale worker=x` where `x` is the number of workers you want running
 
 ## License
 MIT as always
